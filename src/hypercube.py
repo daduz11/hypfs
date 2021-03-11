@@ -7,8 +7,7 @@ class Hypercube:
         self.nodes = []
         self.capacity = HYPERCUBE_SIZE
         for i in range(int(physical_id * (2**self.capacity / NETWORK_SIZE)), int((physical_id + 1) * (2**self.capacity / NETWORK_SIZE))):
-            bit_id = create_binary_id(i)
-            self.nodes.append(Logic_node(bit_id))
+            self.nodes.append(Logic_node(create_binary_id(i)))
 
     def insert(self, keyword, cid):
         bit_id = create_binary_id(keyword)
