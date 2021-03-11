@@ -1,8 +1,6 @@
 from src.logic_node import Logic_node
-from src.parameters import HYPERCUBE_SIZE
 from src.parameters import NETWORK_SIZE
 from src.utils import *
-
 
 class Hypercube:
     def __init__(self, physical_id):
@@ -27,8 +25,6 @@ class Hypercube:
                 return logic_node.get_cids()
         if not found:
             return None
-
-
 
     def get_logic_node(self, id):
         return self.nodes[id]
