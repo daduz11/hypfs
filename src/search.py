@@ -45,16 +45,3 @@ class Search:
         for i in range(0, NETWORK_SIZE):
             continue ####################################################################################################################################################
 
-    # trasformo il numero del nodo nel corrispondente in binario
-
-    def create_binary_id(self, n, hyper):
-        # se il codice binario del nodo ottenuto non è della lunghezza r (dimensione dell'ipercubo) allora aggiungo gli zeri necessari
-        binary_id = bin(n)[2:]
-        while len(binary_id) < hyper:
-            binary_id = '0' + binary_id
-        return binary_id
-
-    # dato in input l'id del nodo si ottiene un bitset dove si tiene traccia dei bit ad 1
-    def create_bitset(self, id):
-        n = int(id, 2)
-        return [i for i in range(n.bit_length()) if n & (1 << i)]

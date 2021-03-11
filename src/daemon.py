@@ -4,7 +4,7 @@ from datetime import datetime
 import signal
 
 
-class Node:
+class Daemon:
     def __init__(self, name, path, powershell=r'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'):
         self.name = name.upper()
         self.path = path
