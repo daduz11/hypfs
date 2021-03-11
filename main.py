@@ -32,7 +32,6 @@ print(node_1.dht.findprovs(res2['Hash'])) #cerca nella DHT i nodi che possono fo
 
 node_1.close()
 node_2.close()
-node_2.close()
 
 
 
