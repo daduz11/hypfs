@@ -39,7 +39,7 @@ print(len(list(node_1.swarm.addrs()['Addrs'])))
 if node_2.id()['ID'] in list(node_1.swarm.addrs()['Addrs']):
     print('FOUND')
 
-
+#
 node_1.close()
 node_2.close()
 
