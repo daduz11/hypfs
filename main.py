@@ -20,7 +20,7 @@ print(node_2.id()) #12D3KooWJdRd7Gp6qLuzNrEJCgkP9MsvfQu7oqfgs6xYWKiS2wqV
 #print(node_1.dht.findprovs(res2['Hash'])) #cerca nella DHT i nodi che possono fornire l'oggetto il cui hash passato
 
 network = Network()
-for i in range(0, 2):
+for i in range(0, NETWORK_SIZE):
     node = Physical_node(i)
     if not network.add_node(node):
         print('Error: node {} not added'.format(i))
@@ -34,7 +34,11 @@ print(network.get_node(0).hypercube.remove('QmXb9edthGYiMDRpr3y82u1daYgpdmewitAr
 print(network.get_node(0).hypercube.get_logic_node(3).get_cids())
 
 print()
-#print(node_1.ping('12D3KooWJdRd7Gp6qLuzNrEJCgkP9MsvfQu7oqfgs6xYWKiS2wqV'))
+print(list(node_1.swarm.addrs()['Addrs']))
+print(len(list(node_1.swarm.addrs()['Addrs'])))
+if node_2.id()['ID'] in list(node_1.swarm.addrs()['Addrs']):
+    print('FOUND')
+
 
 node_1.close()
 node_2.close()
