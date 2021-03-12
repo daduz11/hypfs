@@ -18,3 +18,5 @@ class Logic_node:
     def add_cid(self, cid):
         self.cids.append(cid)
 
+    def remove_cid(self, cid):
+        self.cids.remove(cid)
