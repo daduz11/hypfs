@@ -18,7 +18,7 @@ class Daemon:
     def start_daemon(self):
         if self.daemon is None:
             os.environ["IPFS_PATH"] = self.path
-            self.daemon = subprocess.Popen([self.powershell, '-ExecutionPolicy', 'Unrestricted', 'ipfs daemon'],
+            self.daemon = subprocess.Popen([self.powershell, '-ExecutionPolicy', 'Unrestricted', 'ipfs daemon --enable-pubsub-experiment'],
                                            stdout=subprocess.DEVNULL, shell=True, cwd=os.getcwd())
             self.log("DAEMON STARTED")
         else:
