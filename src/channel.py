@@ -24,3 +24,7 @@ class Channel:
         return m['from'], b64decoder(m['data'])
 
 
+    def b64decoder(self, b64str):
+        return base64.b64decode(b64str.encode('ascii')).decode('ascii')
+
+
