@@ -8,25 +8,25 @@ class Node:
         self.hypercube = Hypercube()
         self.objects = []
 
-    def insert(self, keyword, object):
+    def insert(self, keyword, obj):
         bit_keyword = create_binary_id(keyword)
         if bit_keyword == self.id:
-            if not object in self.objects:
-                self.objects.append(object)
+            if obj not in self.objects:
+                self.objects.append(obj)
         else:
             best_path = self.hypercube.get_shortest_path(self.id, bit_keyword)
             neighbor = best_path[1]
-            request(neighbor, INSERT, {'keyword': str(keyword), 'object': object})
+            request(neighbor, INSERT, {'keyword': str(keyword), 'obj': obj})
 
-    def remove(self, keyword, object):
+    def remove(self, keyword, obj):
         bit_keyword = create_binary_id(keyword)
         if bit_keyword == self.id:
-            if object in self.objects:
-                self.objects.remove(object)
+            if obj in self.objects:
+                self.objects.remove(obj)
         else:
             best_path = self.hypercube.get_shortest_path(self.id, bit_keyword)
             neighbor = best_path[1]
-            request(neighbor, REMOVE, {'keyword': str(keyword), 'object': object})
+            request(neighbor, REMOVE, {'keyword': str(keyword), 'obj': obj})
 
     def pin_search(self, keyword, threshold=-1):
         bit_keyword = create_binary_id(keyword)
@@ -52,7 +52,8 @@ class Node:
             else:
                 best_path = self.hypercube.get_shortest_path(self.id, target)
                 neighbor = best_path[1]
-                result = list(request(neighbor, PIN_SEARCH, {'keyword': int(target, 2), 'threshold': threshold}).text.split(','))
+                result = list(
+                    request(neighbor, PIN_SEARCH, {'keyword': int(target, 2), 'threshold': threshold}).text.split(','))
                 threshold -= len(result)
                 results.extend(result)
         return results

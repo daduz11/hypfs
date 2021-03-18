@@ -21,14 +21,14 @@ class Hypercube:
         plt.show()
 
     def breadth_first_search(self, keyword=None):
-        levels = self.breadth_first_levels(self.graph, keyword)
+        levels = self.breadth_first_levels(keyword)
         nodes = []
         for i in levels:
             for j in i:
                 nodes.append(j)
         return nodes
 
-    def breadth_first_levels(self, G, root):
+    def breadth_first_levels(self, root):
         # Based on http://www.ics.uci.edu/~eppstein/PADS/BFS.py
         # by D. Eppstein, July 2004.
         visited = set()
@@ -39,7 +39,7 @@ class Hypercube:
             next_level = set()
             level_graph = {v: set() for v in current_level}
             for v in current_level:
-                for w in G[v]:
+                for w in self.graph[v]:
                     if w not in visited:
                         if int(w, 2) > int(root, 2):
                             level_graph[v].add(w)

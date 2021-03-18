@@ -1,7 +1,6 @@
 import argparse
-import json
 import sys
-from flask import Flask, request, Response, jsonify
+from flask import Flask, request
 from src.node import Node
 from src.parameters import APP_NAME, LOCAL_HOST, INIT_PORT
 app = Flask(APP_NAME)
@@ -10,8 +9,8 @@ app = Flask(APP_NAME)
 @app.route('/insert')
 def request_insert():
     keyword = int(request.args.get('keyword'))
-    object = request.args.get('object')
-    NODE.insert(keyword, object)
+    obj = request.args.get('obj')
+    NODE.insert(keyword, obj)
     return 'success'
 
 
@@ -33,8 +32,8 @@ def request_pin_search():
 @app.route('/remove')
 def request_remove():
     keyword = int(request.args.get('keyword'))
-    object = request.args.get('object')
-    NODE.remove(keyword, object)
+    obj = request.args.get('obj')
+    NODE.remove(keyword, obj)
     return 'success'
 
 
