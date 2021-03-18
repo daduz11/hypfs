@@ -1,7 +1,5 @@
 import ipfshttpclient
 from src.parameters import *
-import requests
-from flask import Response
 
 from src.utils import request, create_binary_id
 
@@ -24,10 +22,28 @@ url = "http://{}:{}/insert".format(LOCAL_HOST, '50000')  # + int(next_node, 2))
 print(url)
 r = requests.get(url=url, params=params)
 """
-request(create_binary_id(0), INSERT, str(1), 'object_1')
+request(create_binary_id(0), INSERT, {'keyword': str(0), 'object': 'object_0'})
+request(create_binary_id(0), INSERT, {'keyword': str(1), 'object': 'object_1'})
+request(create_binary_id(0), INSERT, {'keyword': str(2), 'object': 'object_2'})
+request(create_binary_id(0), INSERT, {'keyword': str(3), 'object': 'object_3'})
+request(create_binary_id(0), INSERT, {'keyword': str(3), 'object': 'object_4'})
+request(create_binary_id(0), INSERT, {'keyword': str(3), 'object': 'object_5'})
+request(create_binary_id(0), INSERT, {'keyword': str(3), 'object': 'object_6'})
+request(create_binary_id(0), INSERT, {'keyword': str(3), 'object': 'object_7'})
+request(create_binary_id(0), INSERT, {'keyword': str(3), 'object': 'object_8'})
+request(create_binary_id(0), INSERT, {'keyword': str(3), 'object': 'object_9'})
+request(create_binary_id(0), INSERT, {'keyword': str(3), 'object': 'object_10'})
+
 #request(create_binary_id(0), REMOVE, str(1), 'object_1')
-res = request(create_binary_id(0), PIN_SEARCH, str(1), None)
-print(res.text)
+#res = request(create_binary_id(0), PIN_SEARCH, {'keyword': str(1)})
+#print('pinsearch', res.text.split(','))
+
+res = request(create_binary_id(0), SUPERSET_SEARCH, {'keyword': str(2), 'threshold': 3})
+print('superset', res.text.split(','))
+
+res = request(create_binary_id(0), PIN_SEARCH, {'keyword': str(1)})
+print('pinsearch', res.text.split(','))
+
 
 """
 hypercube.insert(7, res2['Hash'])
@@ -45,7 +61,6 @@ print()
 
 
 #node_1.dht.query(node_2.id()['ID'])
-
 #node_2.dht.query(node_1.id()['ID'])
 
 

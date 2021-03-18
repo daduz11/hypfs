@@ -4,12 +4,8 @@ import math
 import base64
 
 
-def request(next_node, operation, keyword, object):
-    if operation != PIN_SEARCH:
-        params = {'keyword': str(keyword), 'object': object}
-    else:
-        params = {'keyword': str(keyword)}
-    url = "http://{}:{}/{}".format(LOCAL_HOST, str(int(next_node, 2) + INIT_PORT), operation)
+def request(neighbor, operation, params):
+    url = "http://{}:{}/{}".format(LOCAL_HOST, str(int(neighbor, 2) + INIT_PORT), operation)
     return requests.get(url=url, params=params)
 
 
@@ -18,8 +14,6 @@ def b64decoder(b64str):
 
 
 # trasformo il numero del nodo nel corrispondente in binario
-
-
 def create_binary_id(n):
     # se il codice binario del nodo ottenuto non è della lunghezza r (dimensione dell'ipercubo) allora aggiungo gli zeri necessari
     binary_id = bin(n)[2:]

@@ -1,4 +1,5 @@
 import argparse
+import json
 import sys
 from flask import Flask, request, Response, jsonify
 from src.node import Node
@@ -11,8 +12,22 @@ def request_insert():
     keyword = int(request.args.get('keyword'))
     object = request.args.get('object')
     NODE.insert(keyword, object)
-    print(NODE.get_objects())
     return 'success'
+
+
+@app.route('/pin_search')
+def request_pin_search():
+    keyword = int(request.args.get('keyword'))
+    threshold = request.args.get('threshold')
+    if threshold is None:
+        res = NODE.pin_search(keyword)
+    else:
+        res = NODE.pin_search(keyword, int(threshold))
+    if type(res) is not list:
+        res = res.text
+    else:
+        res = ','.join(res)
+    return res
 
 
 @app.route('/remove')
@@ -20,22 +35,24 @@ def request_remove():
     keyword = int(request.args.get('keyword'))
     object = request.args.get('object')
     NODE.remove(keyword, object)
-    print(NODE.get_objects())
     return 'success'
 
 
-@app.route('/pin_search')
-def request_pin_search():
+@app.route('/superset_search')
+def request_superset_search():
     keyword = int(request.args.get('keyword'))
-    res = NODE.pin_search(keyword)
+    threshold = int(request.args.get('threshold'))
+    res = NODE.superset_search(keyword, threshold)
     if type(res) is not list:
         res = res.text
-    return str(res)
+    else:
+        res = ','.join(res)
+    return res
 
 
 def parse_arguments(argv):
     parser = argparse.ArgumentParser()
-    parser.add_argument('port', type=int, help='an integer for the accumulator')
+    parser.add_argument('port', type=int, help='Port number to which connect the node')
     return parser.parse_args(argv)
 
 
