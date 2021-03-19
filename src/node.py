@@ -1,18 +1,20 @@
 from src.hypercube import Hypercube
 from src.utils import *
-
+import threading
 
 class Node:
     def __init__(self, int_id):
         self.id = create_binary_id(int_id)
         self.hypercube = Hypercube()
         self.objects = []
+        self._lock = threading.Lock()
 
     def insert(self, keyword, obj):
         bit_keyword = create_binary_id(keyword)
         if bit_keyword == self.id:
             if obj not in self.objects:
-                self.objects.append(obj)
+                with self._lock:
+                    self.objects.append(obj)
         else:
             best_path = self.hypercube.get_shortest_path(self.id, bit_keyword)
             neighbor = best_path[1]
@@ -22,7 +24,8 @@ class Node:
         bit_keyword = create_binary_id(keyword)
         if bit_keyword == self.id:
             if obj in self.objects:
-                self.objects.remove(obj)
+                with self._lock:
+                    self.objects.remove(obj)
         else:
             best_path = self.hypercube.get_shortest_path(self.id, bit_keyword)
             neighbor = best_path[1]
@@ -31,10 +34,11 @@ class Node:
     def pin_search(self, keyword, threshold=-1):
         bit_keyword = create_binary_id(keyword)
         if bit_keyword == self.id:
-            if 0 < threshold < len(self.objects):
-                return self.objects[:threshold]
-            else:
-                return self.objects
+            with self._lock:
+                if 0 < threshold < len(self.objects):
+                    return self.objects[:threshold]
+                else:
+                    return self.objects
         else:
             best_path = self.hypercube.get_shortest_path(self.id, bit_keyword)
             neighbor = best_path[1]
@@ -51,12 +55,13 @@ class Node:
                 if threshold <= 0:
                     break
                 if self.id == target:
-                    if 0 < threshold < len(self.objects):
-                        result = self.objects[:threshold]
-                    else:
-                        result = self.objects
-                    results.extend(result)
-                    threshold -= len(result)
+                    with self._lock:
+                        if 0 < threshold < len(self.objects):
+                            result = self.objects[:threshold]
+                        else:
+                            result = self.objects
+                        results.extend(result)
+                        threshold -= len(result)
                 else:
                     best_path = self.hypercube.get_shortest_path(self.id, target)
                     neighbor = best_path[1]
