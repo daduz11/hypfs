@@ -1,7 +1,12 @@
 from datetime import datetime
-
 import requests
 from src.parameters import *
+
+NODES = 2 ** HYPERCUBE_SIZE
+INSERT = 'insert'
+REMOVE = 'remove'
+PIN_SEARCH = 'pin_search'
+SUPERSET_SEARCH = 'superset_search'
 
 
 def request(neighbor, operation, params):
@@ -25,8 +30,6 @@ def hamming_distance(n1, n2):
     return set_bits
 
 
-def log(tid, operation, msg,  f=None):
+def log(tid, operation, msg):
     log_line = "> {} - [{}] -> [{}]: {:20}".format(datetime.now().strftime("%Y/%m/%d %H:%M:%S"), tid, operation.upper(), msg)
     print(log_line)
-    #f.write(log_line + "\n")
-

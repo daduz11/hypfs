@@ -2,6 +2,7 @@ from src.hypercube import Hypercube
 from src.utils import *
 import threading
 
+
 class Node:
     def __init__(self, int_id):
         self.id = create_binary_id(int_id)
@@ -79,4 +80,3 @@ class Node:
             best_path = self.hypercube.get_shortest_path(self.id, bit_keyword)
             neighbor = best_path[1]
             return request(neighbor, SUPERSET_SEARCH, {'keyword': keyword, 'threshold': threshold, 'superset': superset})
-

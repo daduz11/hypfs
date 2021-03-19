@@ -2,7 +2,8 @@ import argparse
 import sys
 from flask import Flask, request
 from src.node import Node
-from src.parameters import APP_NAME, LOCAL_HOST, INIT_PORT
+from src.parameters import *
+
 app = Flask(APP_NAME)
 
 
