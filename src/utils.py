@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import requests
 from src.parameters import *
 
@@ -21,3 +23,10 @@ def hamming_distance(n1, n2):
         set_bits += x & 1
         x >>= 1
     return set_bits
+
+
+def log(tid, operation, msg,  f=None):
+    log_line = "> {} - [{}] -> [{}]: {:20}".format(datetime.now().strftime("%Y/%m/%d %H:%M:%S"), tid, operation.upper(), msg)
+    print(log_line)
+    #f.write(log_line + "\n")
+

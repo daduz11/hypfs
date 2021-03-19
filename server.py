@@ -10,16 +10,20 @@ app = Flask(APP_NAME)
 def request_insert():
     keyword = int(request.args.get('keyword'))
     obj = request.args.get('obj')
-    NODE.insert(keyword, obj)
-    return 'success'
+    res = NODE.insert(keyword, obj)
+    if type(res) is not str:
+        res = res.text
+    return res
 
 
 @app.route('/remove')
 def request_remove():
     keyword = int(request.args.get('keyword'))
     obj = request.args.get('obj')
-    NODE.remove(keyword, obj)
-    return 'success'
+    res = NODE.remove(keyword, obj)
+    if type(res) is not str:
+        res = res.text
+    return res
 
 
 @app.route('/pin_search')

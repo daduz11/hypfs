@@ -6,10 +6,10 @@ import matplotlib.pyplot as plt
 class Hypercube:
     def __init__(self):
         self.graph = nx.Graph()
-        for i in range(0, LOGIC_NODES):
+        for i in range(0, NODES):
             self.graph.add_node(create_binary_id(i))
-        for i in range(0, LOGIC_NODES):
-            for j in range(0, LOGIC_NODES):
+        for i in range(0, NODES):
+            for j in range(0, NODES):
                 if hamming_distance(i, j) == 1:
                     self.graph.add_edge(create_binary_id(i), create_binary_id(j))
 

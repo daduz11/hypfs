@@ -15,10 +15,13 @@ class Node:
             if obj not in self.objects:
                 with self._lock:
                     self.objects.append(obj)
+                    return 'success'
+            else:
+                return 'failure'
         else:
             best_path = self.hypercube.get_shortest_path(self.id, bit_keyword)
             neighbor = best_path[1]
-            request(neighbor, INSERT, {'keyword': str(keyword), 'obj': obj})
+            return request(neighbor, INSERT, {'keyword': str(keyword), 'obj': obj})
 
     def remove(self, keyword, obj):
         bit_keyword = create_binary_id(keyword)
@@ -26,10 +29,13 @@ class Node:
             if obj in self.objects:
                 with self._lock:
                     self.objects.remove(obj)
+                    return 'success'
+            else:
+                return 'failure'
         else:
             best_path = self.hypercube.get_shortest_path(self.id, bit_keyword)
             neighbor = best_path[1]
-            request(neighbor, REMOVE, {'keyword': str(keyword), 'obj': obj})
+            return request(neighbor, REMOVE, {'keyword': str(keyword), 'obj': obj})
 
     def pin_search(self, keyword, threshold=-1):
         bit_keyword = create_binary_id(keyword)
