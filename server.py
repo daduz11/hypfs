@@ -14,6 +14,14 @@ def request_insert():
     return 'success'
 
 
+@app.route('/remove')
+def request_remove():
+    keyword = int(request.args.get('keyword'))
+    obj = request.args.get('obj')
+    NODE.remove(keyword, obj)
+    return 'success'
+
+
 @app.route('/pin_search')
 def request_pin_search():
     keyword = int(request.args.get('keyword'))
@@ -29,19 +37,12 @@ def request_pin_search():
     return res
 
 
-@app.route('/remove')
-def request_remove():
-    keyword = int(request.args.get('keyword'))
-    obj = request.args.get('obj')
-    NODE.remove(keyword, obj)
-    return 'success'
-
-
 @app.route('/superset_search')
 def request_superset_search():
     keyword = int(request.args.get('keyword'))
     threshold = int(request.args.get('threshold'))
-    res = NODE.superset_search(keyword, threshold)
+    superset = request.args.get('superset')
+    res = NODE.superset_search(keyword, threshold, superset)
     if type(res) is not list:
         res = res.text
     else:

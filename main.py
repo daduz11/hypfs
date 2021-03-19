@@ -38,11 +38,11 @@ request(create_binary_id(0), INSERT, {'keyword': str(3), 'obj': 'object_10'})
 #res = request(create_binary_id(0), PIN_SEARCH, {'keyword': str(1)})
 #print('pinsearch', res.text.split(','))
 
-res = request(create_binary_id(0), SUPERSET_SEARCH, {'keyword': str(2), 'threshold': 3})
+res = request(create_binary_id(0), SUPERSET_SEARCH, {'keyword': str(3), 'threshold': 2})
 print('superset', res.text.split(','))
 
-res = request(create_binary_id(0), PIN_SEARCH, {'keyword': str(1)})
-print('pinsearch', res.text.split(','))
+#res = request(create_binary_id(0), PIN_SEARCH, {'keyword': str(1)})
+#print('pinsearch', res.text.split(','))
 
 
 """

@@ -40,20 +40,32 @@ class Node:
             neighbor = best_path[1]
             return request(neighbor, PIN_SEARCH, {'keyword': str(keyword), 'threshold': threshold})
 
-    def superset_search(self, keyword, threshold):
-        results = []
+    def superset_search(self, keyword, threshold, superset=None):
         bit_keyword = create_binary_id(keyword)
-        superset = self.hypercube.breadth_first_search(bit_keyword)
-        for target in superset:
-            if threshold <= 0:
-                break
-            if self.id == target:
-                results.extend(self.objects)
-            else:
-                best_path = self.hypercube.get_shortest_path(self.id, target)
-                neighbor = best_path[1]
-                result = list(
-                    request(neighbor, PIN_SEARCH, {'keyword': int(target, 2), 'threshold': threshold}).text.split(','))
-                threshold -= len(result)
-                results.extend(result)
-        return results
+        if superset is None:
+            superset = ','.join(self.hypercube.breadth_first_search(bit_keyword))
+        if self.id == bit_keyword:
+            superset = list(superset.split(','))
+            results = []
+            for target in superset:
+                if threshold <= 0:
+                    break
+                if self.id == target:
+                    if 0 < threshold < len(self.objects):
+                        result = self.objects[:threshold]
+                    else:
+                        result = self.objects
+                    results.extend(result)
+                    threshold -= len(result)
+                else:
+                    best_path = self.hypercube.get_shortest_path(self.id, target)
+                    neighbor = best_path[1]
+                    result = list(request(neighbor, PIN_SEARCH, {'keyword': int(target, 2), 'threshold': threshold}).text.split(','))
+                    threshold -= len(result)
+                    results.extend(result)
+            return results
+        else:
+            best_path = self.hypercube.get_shortest_path(self.id, bit_keyword)
+            neighbor = best_path[1]
+            return request(neighbor, SUPERSET_SEARCH, {'keyword': keyword, 'threshold': threshold, 'superset': superset})
+
