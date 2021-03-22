@@ -3,15 +3,12 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 
+LABELS = {tuple(int(j) for j in create_binary_id(i)): create_binary_id(i) for i in range(0, NODES)}
+
+
 class Hypercube:
     def __init__(self):
-        self.graph = nx.Graph()
-        for i in range(0, NODES):
-            self.graph.add_node(create_binary_id(i))
-        for i in range(0, NODES):
-            for j in range(0, NODES):
-                if hamming_distance(i, j) == 1:
-                    self.graph.add_edge(create_binary_id(i), create_binary_id(j))
+        self.graph = nx.relabel_nodes(nx.generators.lattice.hypercube_graph(HYPERCUBE_SIZE), LABELS)
 
     def get_shortest_path(self, source, target):
         return nx.shortest_path(self.graph, source, target)
@@ -37,12 +34,11 @@ class Hypercube:
             for v in current_level:
                 visited.add(v)
             next_level = set()
-            level_graph = {v: set() for v in current_level}
+            level_graph = {v: set() for v in sorted(current_level, reverse=True)}
             for v in current_level:
                 for w in self.graph[v]:
-                    if w not in visited:
-                        if int(w, 2) > int(root, 2):
-                            level_graph[v].add(w)
-                            next_level.add(w)
+                    if w not in visited and w > v:
+                        level_graph[v].add(w)
+                        next_level.add(w)
             yield level_graph
             current_level = next_level

@@ -80,3 +80,4 @@ class Node:
             best_path = self.hypercube.get_shortest_path(self.id, bit_keyword)
             neighbor = best_path[1]
             return request(neighbor, SUPERSET_SEARCH, {'keyword': keyword, 'threshold': threshold, 'superset': superset})
+

@@ -21,6 +21,18 @@ def create_binary_id(n):
     return binary_id
 
 
+def one(bit):
+    n = int(bit, 2)
+    return [i for i in range(n.bit_length()) if n & (1 << i)]
+
+
+def b1_in_b2(b1, b2):
+    if all(bit in one(b2) for bit in one(b1)):
+        return True
+    else:
+        return False
+
+
 def hamming_distance(n1, n2):
     x = n1 ^ n2
     set_bits = 0

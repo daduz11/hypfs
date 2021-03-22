@@ -12,6 +12,3 @@ daemon2.start_daemon()
 
 input()
 os.system("taskkill /IM ipfs.exe /F")
-
-# daemon1.kill_daemon()
-# daemon2.kill_daemon()

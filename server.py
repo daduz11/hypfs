@@ -60,10 +60,13 @@ def parse_arguments(argv):
     parser.add_argument('port', type=int, help='Port number to which connect the node')
     return parser.parse_args(argv)
 
+import time
 
 if __name__ == '__main__':
     PORT = parse_arguments(sys.argv[1:]).port
     NODE_ID = PORT - INIT_PORT
+    print('initializing...')
+    t0 = time.process_time()
     NODE = Node(NODE_ID)
-
+    print('elapsed time: {} seconds'.format(time.process_time()-t0))
     app.run(host=LOCAL_HOST, port=PORT, threaded=True)

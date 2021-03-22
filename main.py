@@ -1,11 +1,11 @@
-from client import Client
+from client import Client, NODES, create_binary_id
+from src.hypercube import Hypercube
 from src.parameters import *
-
 
 client_1 = Client(IPFS_CLIENT_ADDRESS_1, 0)
 client_2 = Client(IPFS_CLIENT_ADDRESS_1, 1)
 
-hash_1 = client_1.add_obj('test.txt', 3)
+hash_1 = client_1.add_obj('F:\\david\\Google Drive\\Documents\\uni\\BC\\project\\cappuccetto_rotto.txt', 3)
 hash_1 = client_1.add_obj('test2.txt')
 hash_1 = client_1.add_obj('test.txt')
 hash_1 = client_1.add_obj('test2.txt')
@@ -19,8 +19,3 @@ client_1.get_obj(input())
 print()
 
 client_1.close()
-
-
-
-
-
