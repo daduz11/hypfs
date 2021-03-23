@@ -50,7 +50,7 @@ class Node:
             best_path = self.hypercube.get_shortest_path(self.id, bit_keyword)
             neighbor = best_path[1]
             return request(neighbor, PIN_SEARCH, {'keyword': str(keyword), 'threshold': threshold})
-
+    """
     def superset_search(self, keyword, threshold, superset=None):
         bit_keyword = create_binary_id(keyword)
         if superset is None:
@@ -80,4 +80,34 @@ class Node:
             best_path = self.hypercube.get_shortest_path(self.id, bit_keyword)
             neighbor = best_path[1]
             return request(neighbor, SUPERSET_SEARCH, {'keyword': keyword, 'threshold': threshold, 'superset': superset})
+    """
 
+    def superset_search(self, keyword, threshold, _from):
+        bit_keyword = create_binary_id(keyword)
+        if one(bit_keyword) != one(self.id) and _from == 'user':
+            best_path = self.hypercube.get_shortest_path(self.id, bit_keyword)
+            neighbor = best_path[1]
+            return request(neighbor, SUPERSET_SEARCH, {'keyword': keyword, 'threshold': threshold, 'from': 'user'})
+        else:
+            if b1_in_b2(bit_keyword, self.id):
+                results = []
+                if 0 < threshold < len(self.objects):
+                    result = self.objects[:threshold]
+                else:
+                    result = self.objects
+                results.extend(result)
+                threshold -= len(result)
+                print(self.get_neighbors(bit_keyword))
+                for neighbor in self.get_neighbors(bit_keyword):
+                    if threshold <= 0:
+                        break
+                    else:
+                        result = request(neighbor, SUPERSET_SEARCH, {'keyword': keyword, 'threshold': threshold, 'from': 'node'}).text.split(',')
+                        results.extend(result)
+                        threshold -= len(result)
+            return results
+
+    def get_neighbors(self, keyword):
+        dfs = self.hypercube.depth_first_search(keyword)
+        idx = dfs.index(self.id)
+        return [dfs[i] for i in range(idx, len(dfs)) if hamming_distance(int(dfs[i], 2), int(self.id, 2)) == 1 and self.id < dfs[i]]

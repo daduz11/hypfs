@@ -46,8 +46,8 @@ def request_pin_search():
 def request_superset_search():
     keyword = int(request.args.get('keyword'))
     threshold = int(request.args.get('threshold'))
-    superset = request.args.get('superset')
-    res = NODE.superset_search(keyword, threshold, superset)
+    _from = request.args.get('from')
+    res = NODE.superset_search(keyword, threshold, _from)
     if type(res) is not list:
         res = res.text
     else:
@@ -65,8 +65,5 @@ import time
 if __name__ == '__main__':
     PORT = parse_arguments(sys.argv[1:]).port
     NODE_ID = PORT - INIT_PORT
-    print('initializing...')
-    t0 = time.process_time()
     NODE = Node(NODE_ID)
-    print('elapsed time: {} seconds'.format(time.process_time()-t0))
     app.run(host=LOCAL_HOST, port=PORT, threaded=True)

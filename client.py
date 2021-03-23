@@ -44,7 +44,7 @@ class Client:
         return
 
     def superset_search(self, keyword=randint(0, NODES-1), threshold=SUPERSET_THRESHOLD):
-        res = request(create_binary_id(self.server), SUPERSET_SEARCH, {'keyword': str(keyword), 'threshold': threshold}).text.split(',')
+        res = request(create_binary_id(self.server), SUPERSET_SEARCH, {'keyword': str(keyword), 'threshold': threshold, 'from': 'user'}).text.split(',')
         if len(res) > 0:
             log(self.id, SUPERSET_SEARCH, '{}'.format(res))
         else:

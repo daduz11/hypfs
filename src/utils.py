@@ -23,7 +23,12 @@ def create_binary_id(n):
 
 def one(bit):
     n = int(bit, 2)
-    return [i for i in range(n.bit_length()) if n & (1 << i)]
+    return sorted([i for i in range(0, len(bit)) if n & (1 << i)], reverse=True)
+
+
+def zero(bit):
+    n = int(bit, 2)
+    return sorted([i for i in range(0, len(bit)) if not n & (1 << i)], reverse=True)
 
 
 def b1_in_b2(b1, b2):
