@@ -65,7 +65,7 @@ class Node:
             return results
 
     def get_neighbors(self, keyword):
-        if SEARCH_TYPE == BFS:
+        if SEARCH_TYPE == 'BFS':
             tree = self.hypercube.breadth_first_search(keyword)
         else:
             tree = self.hypercube.depth_first_search(keyword)
