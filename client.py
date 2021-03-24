@@ -1,6 +1,8 @@
-from random import randint
 import ipfshttpclient
 from src.utils import *
+
+
+DOWNLOAD_FOLDER = './objects'
 
 
 class Client:
@@ -10,7 +12,7 @@ class Client:
         self.server = server
         log(self.id, 'CONNECTION', '{}'.format(addr))
 
-    def add_obj(self, path, keyword=randint(0, NODES-1)):
+    def add_obj(self, path, keyword):
         obj_hash = self.ipfs.add(path)['Hash']
         if request(create_binary_id(self.server), INSERT, {'keyword': str(keyword), 'obj': obj_hash}).text == 'success':
             log(self.id, INSERT, 'REFERENCE ({},{}) ADDED'.format(keyword, obj_hash))
@@ -18,7 +20,7 @@ class Client:
             log(self.id, INSERT, 'REFERENCE ({},{}) ALREADY EXIST'.format(keyword, obj_hash))
         return
 
-    def remove_obj(self, obj_hash, keyword=randint(0, NODES-1)):
+    def remove_obj(self, obj_hash, keyword):
         if request(create_binary_id(self.server), REMOVE, {'keyword': str(keyword), 'obj': obj_hash}).text == 'success':
             log(self.id, REMOVE, 'REFERENCE ({},{}) REMOVED'.format(keyword, obj_hash))
         else:
@@ -27,24 +29,24 @@ class Client:
 
     def get_obj(self, obj):
         try:
-            self.ipfs.get(obj, target='./objects')
+            self.ipfs.get(obj, target=DOWNLOAD_FOLDER)
             log(self.id, 'GET', "OBJECT '{}' DOWNLOADED".format(obj))
         except Exception:
             log(self.id, 'GET', "OBJECT '{}' NOT FOUND".format(obj))
 
-    def pin_search(self, keyword=randint(0, NODES-1), threshold=-1):
+    def pin_search(self, keyword, threshold=-1):
         if threshold == -1:
-            res = request(create_binary_id(self.server), PIN_SEARCH, {'keyword': str(keyword)}).text.split(',')
+            res = get_response(request(create_binary_id(self.server), PIN_SEARCH, {'keyword': str(keyword)}).text)
         else:
-            res = request(create_binary_id(self.server), PIN_SEARCH, {'keyword': str(keyword), 'threshold': threshold}).text.split(',')
+            res = get_response(request(create_binary_id(self.server), PIN_SEARCH, {'keyword': str(keyword), 'threshold': threshold}).text)
         if len(res) > 0:
             log(self.id, PIN_SEARCH, '{}'.format(res))
         else:
             log(self.id, PIN_SEARCH, 'NO RESULTS FOUND')
         return
 
-    def superset_search(self, keyword=randint(0, NODES-1), threshold=SUPERSET_THRESHOLD):
-        res = request(create_binary_id(self.server), SUPERSET_SEARCH, {'keyword': str(keyword), 'threshold': threshold, 'from': 'user'}).text.split(',')
+    def superset_search(self, keyword, threshold=SUPERSET_THRESHOLD):
+        res = get_response(request(create_binary_id(self.server), SUPERSET_SEARCH, {'keyword': str(keyword), 'threshold': threshold, 'sender': 'user'}).text)
         if len(res) > 0:
             log(self.id, SUPERSET_SEARCH, '{}'.format(res))
         else:
