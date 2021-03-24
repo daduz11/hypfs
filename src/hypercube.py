@@ -1,4 +1,4 @@
-from src.utils import *
+from utils import *
 import networkx as nx
 import matplotlib.pyplot as plt
 

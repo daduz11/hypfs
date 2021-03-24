@@ -1,5 +1,5 @@
-from src.hypercube import Hypercube
-from src.utils import *
+from hypercube import Hypercube
+from utils import *
 import threading
 
 

@@ -1,6 +1,6 @@
 from datetime import datetime
 import requests
-from src.parameters import *
+from src.config import *
 
 NODES = 2 ** HYPERCUBE_SIZE
 INSERT = 'insert'
@@ -10,7 +10,7 @@ SUPERSET_SEARCH = 'superset_search'
 
 
 def request(neighbor, operation, params):
-    url = "http://{}:{}/{}".format(LOCAL_HOST, str(int(neighbor, 2) + INIT_PORT), operation)
+    url = "http://{}:{}/{}".format(LOCAL_HOST, str(get_decimal(neighbor) + INIT_PORT), operation)
     return requests.get(url=url, params=params)
 
 
@@ -21,18 +21,17 @@ def create_binary_id(n):
     return binary_id
 
 
+def get_decimal(bit):
+    return int(bit, 2)
+
+
 def one(bit):
-    n = int(bit, 2)
-    return sorted([i for i in range(0, len(bit)) if n & (1 << i)], reverse=True)
+    n = get_decimal(bit)
+    return [i for i in range(0, len(bit)) if n & (1 << i)]
 
 
-def zero(bit):
-    n = int(bit, 2)
-    return sorted([i for i in range(0, len(bit)) if not n & (1 << i)], reverse=True)
-
-
-def b1_in_b2(b1, b2):
-    if all(bit in one(b2) for bit in one(b1)):
+def is_included(bitset_1, bitset_2):
+    if all(bit in bitset_2 for bit in bitset_1):
         return True
     else:
         return False
@@ -50,3 +49,10 @@ def hamming_distance(n1, n2):
 def log(tid, operation, msg):
     log_line = "> {} - [{}] -> [{}]: {:20}".format(datetime.now().strftime("%Y/%m/%d %H:%M:%S"), tid, operation.upper(), msg)
     print(log_line)
+
+
+def get_response(res):
+    if res != '':
+        return res.split(',')
+    else:
+        return []
