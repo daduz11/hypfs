@@ -18,14 +18,9 @@ class Hypercube:
         plt.show()
 
     def breadth_first_search(self, keyword=None):
-        levels = self.breadth_first_levels(keyword)
-        nodes = []
-        for i in levels:
-            for j in i:
-                nodes.append(j)
-        return nodes
+        return [node for level in self.get_edges_bfs(keyword) for node in level]
 
-    def breadth_first_levels(self, root):
+    def get_edges_bfs(self, root):
         # Based on http://www.ics.uci.edu/~eppstein/PADS/BFS.py
         # by D. Eppstein, July 2004.
         visited = set()
@@ -44,10 +39,9 @@ class Hypercube:
             current_level = next_level
 
     def depth_first_search(self, keyword=None, depth_limit=None):
-        edges = self.do_search(keyword=keyword, depth_limit=depth_limit)
-        return [v for u, v, d in edges if d == "forward"]
+        return [v for u, v, d in self.get_edges_dfs(keyword=keyword, depth_limit=depth_limit) if d == "forward"]
 
-    def do_search(self, keyword=None, depth_limit=None):
+    def get_edges_dfs(self, keyword=None, depth_limit=None):
         # Based on http://www.ics.uci.edu/~eppstein/PADS/DFS.py
         # by D. Eppstein, July 2004.
         if keyword is None:
@@ -69,8 +63,8 @@ class Hypercube:
                 parent, depth_now, children = stack[-1]
                 try:
                     child = next(children)
-                    if child in visited or int(parent, 2) > int(child, 2):
-                        yield parent, child, "nontree"
+                    if child in visited or parent > child:
+                        yield parent, child, "non_tree"
                     else:
                         yield parent, child, "forward"
                         visited.add(child)
