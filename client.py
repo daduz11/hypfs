@@ -1,6 +1,7 @@
 import ipfshttpclient
-from src.utils import *
 
+from src.config import SUPERSET_THRESHOLD
+from src.utils import *
 
 DOWNLOAD_FOLDER = './objects'
 
@@ -14,17 +15,17 @@ class Client:
 
     def add_obj(self, path, keyword):
         obj_hash = self.ipfs.add(path)['Hash']
-        if request(create_binary_id(self.server), INSERT, {'keyword': str(keyword), 'obj': obj_hash}).text == 'success':
-            log(self.id, INSERT, 'REFERENCE ({},{}) ADDED'.format(keyword, obj_hash))
+        if request(create_binary_id(self.server), INSERT, {'keyword': str(keyword), 'obj': obj_hash, 'hop': str(0)}).text == 'success':
+            log(self.id, INSERT[1:], 'REFERENCE ({},{}) ADDED'.format(keyword, obj_hash))
         else:
-            log(self.id, INSERT, 'REFERENCE ({},{}) ALREADY EXIST'.format(keyword, obj_hash))
+            log(self.id, INSERT[1:], 'REFERENCE ({},{}) ALREADY EXIST'.format(keyword, obj_hash))
         return
 
     def remove_obj(self, obj_hash, keyword):
         if request(create_binary_id(self.server), REMOVE, {'keyword': str(keyword), 'obj': obj_hash}).text == 'success':
-            log(self.id, REMOVE, 'REFERENCE ({},{}) REMOVED'.format(keyword, obj_hash))
+            log(self.id, REMOVE[1:], 'REFERENCE ({},{}) REMOVED'.format(keyword, obj_hash))
         else:
-            log(self.id, REMOVE, 'REFERENCE ({},{}) NOT EXIST'.format(keyword, obj_hash))
+            log(self.id, REMOVE[1:], 'REFERENCE ({},{}) NOT EXIST'.format(keyword, obj_hash))
         return
 
     def get_obj(self, obj):
@@ -40,17 +41,17 @@ class Client:
         else:
             res = get_response(request(create_binary_id(self.server), PIN_SEARCH, {'keyword': str(keyword), 'threshold': threshold}).text)
         if len(res) > 0:
-            log(self.id, PIN_SEARCH, '{}'.format(res))
+            log(self.id, PIN_SEARCH[1:], '{}'.format(res))
         else:
-            log(self.id, PIN_SEARCH, 'NO RESULTS FOUND')
+            log(self.id, PIN_SEARCH[1:], 'NO RESULTS FOUND')
         return
 
     def superset_search(self, keyword, threshold=SUPERSET_THRESHOLD):
         res = get_response(request(create_binary_id(self.server), SUPERSET_SEARCH, {'keyword': str(keyword), 'threshold': threshold, 'sender': 'user'}).text)
         if len(res) > 0:
-            log(self.id, SUPERSET_SEARCH, '{}'.format(res))
+            log(self.id, SUPERSET_SEARCH[1:], '{}'.format(res))
         else:
-            log(self.id, SUPERSET_SEARCH, 'NO RESULTS FOUND')
+            log(self.id, SUPERSET_SEARCH[1:], 'NO RESULTS FOUND')
         return
 
     def close(self):

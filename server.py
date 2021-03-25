@@ -1,13 +1,15 @@
 import argparse
 import sys
 from flask import Flask, request
-from config import *
-from node import Node
+
+from src.config import *
+from src.node import Node, requests
+from src.utils import INSERT, REMOVE, PIN_SEARCH, SUPERSET_SEARCH
 
 app = Flask(APP_NAME)
 
 
-@app.route('/insert')
+@app.route(INSERT)
 def request_insert():
     keyword = int(request.args.get('keyword'))
     obj = request.args.get('obj')
@@ -17,7 +19,7 @@ def request_insert():
     return res
 
 
-@app.route('/remove')
+@app.route(REMOVE)
 def request_remove():
     keyword = int(request.args.get('keyword'))
     obj = request.args.get('obj')
@@ -27,7 +29,7 @@ def request_remove():
     return res
 
 
-@app.route('/pin_search')
+@app.route(PIN_SEARCH)
 def request_pin_search():
     keyword = int(request.args.get('keyword'))
     threshold = request.args.get('threshold')
@@ -42,12 +44,12 @@ def request_pin_search():
     return res
 
 
-@app.route('/superset_search')
+@app.route(SUPERSET_SEARCH)
 def request_superset_search():
     keyword = int(request.args.get('keyword'))
     threshold = int(request.args.get('threshold'))
-    _from = request.args.get('sender')
-    res = NODE.superset_search(keyword, threshold, _from)
+    sender = request.args.get('sender')
+    res = NODE.superset_search(keyword, threshold, sender)
     if type(res) is not list:
         res = res.text
     else:
@@ -60,7 +62,6 @@ def parse_arguments(argv):
     parser.add_argument('port', type=int, help='Port number to which connect the node')
     return parser.parse_args(argv)
 
-import time
 
 if __name__ == '__main__':
     PORT = parse_arguments(sys.argv[1:]).port

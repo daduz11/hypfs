@@ -1,29 +1,48 @@
+import os
 from random import randint
+from statistics import mean
 
-from src.client import Client
-
-IPFS_CLIENT_ADDRESS_1 = '/ip4/127.0.0.1/tcp/5001'
-IPFS_CLIENT_ADDRESS_2 = '/ip4/127.0.0.1/tcp/5002'
-
-client_1 = Client(IPFS_CLIENT_ADDRESS_1, 7)
-client_2 = Client(IPFS_CLIENT_ADDRESS_1, 1)
+from client import Client
+from src.config import LOCAL_HOST
+from src.utils import request, HOP_SERVER_PORT, RESET_HOPS, GET_HOPS, reset_hops, get_hops, NODES
 
 
+IPFS_CLIENT_ADDRESS = '/ip4/127.0.0.1/tcp/5001'
+OBJECTS = 20
+PINSEARCH_ATTEMPS = 20
+SUPERSET_ATTEMPS = 20
+SUPERSET_LIMIT = 10
 
 
-hash_1 = client_1.add_obj('F:\\david\\Google Drive\\Documents\\uni\\BC\\project\\cappuccetto_rotto.txt',1)
-hash_1 = client_1.add_obj('F:\\david\\Google Drive\\Documents\\uni\\BC\\project\\cappuccetto_rotto.txt',2)
-hash_1 = client_1.add_obj('F:\\david\\Google Drive\\Documents\\uni\\BC\\project\\cappuccetto_rotto.txt',3)
-hash_1 = client_1.add_obj('F:\\david\\Google Drive\\Documents\\uni\\BC\\project\\cappuccetto_rotto.txt',4)
-hash_1 = client_1.add_obj('F:\\david\\Google Drive\\Documents\\uni\\BC\\project\\cappuccetto_rotto.txt',5)
-hash_1 = client_1.add_obj('F:\\david\\Google Drive\\Documents\\uni\\BC\\project\\cappuccetto_rotto.txt',6)
-hash_1 = client_1.add_obj('F:\\david\\Google Drive\\Documents\\uni\\BC\\project\\cappuccetto_rotto.txt',7)
-client_1.remove_obj('QmXb9edthGYiMDRpr3y82u1daYgpdmewitArf1wTU46mCs', 5)
-client_1.pin_search(3)
-client_1.superset_search(1)
+client = Client(IPFS_CLIENT_ADDRESS, 7)
 
-client_1.get_obj(input())
+
+for i in range(0, OBJECTS):
+    client = Client(IPFS_CLIENT_ADDRESS, randint(0, NODES-1))
+    with open('./test_files/' + str(i), 'wb') as random_file:
+        random_file.write(os.urandom(512))
+    client.add_obj('./test_files/' + str(i), randint(0, NODES-1))
+    client.close()
+
+pinsearch_hops = []
+
+for i in range(0, PINSEARCH_ATTEMPS):
+    client = Client(IPFS_CLIENT_ADDRESS, randint(0, NODES-1))
+    reset_hops()
+    client.pin_search(randint(0, NODES-1))
+    pinsearch_hops.append(get_hops())
+    client.close()
+
+superset_hops = []
+
+for i in range(0, SUPERSET_ATTEMPS):
+    client = Client(IPFS_CLIENT_ADDRESS, randint(0, NODES-1))
+    reset_hops()
+    client.superset_search(randint(0, NODES-1), SUPERSET_LIMIT)
+    superset_hops.append(get_hops())
+    client.close()
 
 print()
-
-client_1.close()
+print('RESULTS')
+print('pinsearch: {}'.format(mean(pinsearch_hops)))
+print('superset:  {}'.format(mean(superset_hops)))

@@ -1,7 +1,8 @@
-from utils import *
 import networkx as nx
 import matplotlib.pyplot as plt
 
+from src.config import HYPERCUBE_SIZE
+from src.utils import create_binary_id, NODES
 
 LABELS = {tuple(int(j) for j in create_binary_id(i)): create_binary_id(i) for i in range(0, NODES)}
 

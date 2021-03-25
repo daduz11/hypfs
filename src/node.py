@@ -1,5 +1,6 @@
-from hypercube import Hypercube
-from utils import *
+from src.config import SEARCH_TYPE, HOP_SERVER_PORT
+from src.hypercube import Hypercube
+from src.utils import *
 import threading
 
 
@@ -50,7 +51,6 @@ class Node:
             neighbor = self.hypercube.get_shortest_path(self.id, bit_keyword)[1]
             return request(neighbor, SUPERSET_SEARCH, {'keyword': keyword, 'threshold': threshold, 'sender': 'user'})
         else:
-            #if is_included(one(bit_keyword), one(self.id)):
             results = []
             objects = self.get_objects(threshold)
             results.extend(objects)

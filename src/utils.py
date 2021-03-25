@@ -1,17 +1,34 @@
 from datetime import datetime
 import requests
-from src.config import *
+
+from src.config import LOCAL_HOST, HYPERCUBE_SIZE, INIT_PORT, HOP_SERVER_PORT
 
 NODES = 2 ** HYPERCUBE_SIZE
-INSERT = 'insert'
-REMOVE = 'remove'
-PIN_SEARCH = 'pin_search'
-SUPERSET_SEARCH = 'superset_search'
+INSERT = '/insert'
+REMOVE = '/remove'
+PIN_SEARCH = '/pin_search'
+SUPERSET_SEARCH = '/superset_search'
+INCREASE_HOPS = '/increase_hops'
+RESET_HOPS = '/reset_hops'
+GET_HOPS = '/get_hops'
 
 
-def request(neighbor, operation, params):
-    url = "http://{}:{}/{}".format(LOCAL_HOST, str(get_decimal(neighbor) + INIT_PORT), operation)
+def request(neighbor, operation, params={}):
+    increase_hops()
+    url = "http://{}:{}{}".format(LOCAL_HOST, str(get_decimal(neighbor) + INIT_PORT), operation)
     return requests.get(url=url, params=params)
+
+
+def increase_hops():
+    requests.get(url="http://{}:{}{}".format(LOCAL_HOST, HOP_SERVER_PORT, INCREASE_HOPS))
+
+
+def reset_hops():
+    requests.get(url="http://{}:{}{}".format(LOCAL_HOST, HOP_SERVER_PORT, RESET_HOPS))
+
+
+def get_hops():
+    return int(requests.get(url="http://{}:{}{}".format(LOCAL_HOST, HOP_SERVER_PORT, GET_HOPS)).text) - 1
 
 
 def create_binary_id(n):
@@ -28,13 +45,6 @@ def get_decimal(bit):
 def one(bit):
     n = get_decimal(bit)
     return [i for i in range(0, len(bit)) if n & (1 << i)]
-
-
-def is_included(bitset_1, bitset_2):
-    if all(bit in bitset_2 for bit in bitset_1):
-        return True
-    else:
-        return False
 
 
 def hamming_distance(n1, n2):
