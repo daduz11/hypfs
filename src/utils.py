@@ -57,8 +57,8 @@ def hamming_distance(n1, n2):
 
 
 def log(tid, operation, msg):
-    #log_line = "> {} - [{}] -> [{}]: {:20}".format(datetime.now().strftime("%Y/%m/%d %H:%M:%S"), tid, operation.upper(), msg)
-    #print(log_line)
+    log_line = "> {} - [{}] -> [{}]: {:20}".format(datetime.now().strftime("%Y/%m/%d %H:%M:%S"), tid, operation.upper(), msg)
+    print(log_line)
     return
 
 
