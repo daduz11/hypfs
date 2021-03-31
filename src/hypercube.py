@@ -18,27 +18,6 @@ class Hypercube:
         nx.draw(self.graph, with_labels=True, font_weight='bold')
         plt.show()
 
-    def breadth_first_search(self, keyword=None):
-        return [node for level in self.get_edges_bfs(keyword) for node in level]
-
-    def get_edges_bfs(self, root):
-        # Based on http://www.ics.uci.edu/~eppstein/PADS/BFS.py
-        # by D. Eppstein, July 2004.
-        visited = set()
-        current_level = [root]
-        while current_level:
-            for v in current_level:
-                visited.add(v)
-            next_level = set()
-            level_graph = {v: set() for v in sorted(current_level, reverse=True)}
-            for v in current_level:
-                for w in self.graph[v]:
-                    if w not in visited and w > v:
-                        level_graph[v].add(w)
-                        next_level.add(w)
-            yield level_graph
-            current_level = next_level
-
     def depth_first_search(self, keyword=None, depth_limit=None):
         return [v for u, v, d in self.get_edges_dfs(keyword=keyword, depth_limit=depth_limit) if d == "forward"]
 
