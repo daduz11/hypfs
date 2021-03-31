@@ -1,4 +1,3 @@
-from src.config import SEARCH_TYPE, HOP_SERVER_PORT
 from src.hypercube import Hypercube
 from src.utils import *
 import threading
@@ -65,10 +64,7 @@ class Node:
             return results
 
     def get_neighbors(self, keyword):
-        if SEARCH_TYPE == 'BFS':
-            tree = self.hypercube.breadth_first_search(keyword)
-        else:
-            tree = self.hypercube.depth_first_search(keyword)
+        tree = self.hypercube.depth_first_search(keyword)
         return [tree[i] for i in range(tree.index(self.id), len(tree)) if hamming_distance(get_decimal(tree[i]), get_decimal(self.id)) == 1 and self.id < tree[i]]
 
     def get_objects(self, threshold):
