@@ -1,21 +1,41 @@
 #  HYPFS
 
+<img src="https://github.com/daduz11/hypfs/blob/master/sys_arch.png" width="230" align="center">
+
 
 This project was carried out for an assignment of Blockchain and Cryptocurrencies course at the University of Bologna. 
 
 The proposal provides the implementation of a Decentralized keywords Search Engine based on a hypercube structure and integrated with IPFS using Python.
 
-## Executables
-* **menu.py**: script that provides a user-friendly command line UI.
-* **start_daemons.py**: script useful for starting two IPFS processes.
-* **start_servers.py**: script useful for starting 2^HYPERCUBE_SIZE servers processes, and the hop_counter.
-* **bench.py**: script used for testing.
-
-## Folders
+##  Folders and Executables
+ ####
 * **src**: contains all the scripts of the hypercube and node implementation.  
 * **results**: contains the results of tests carried out with the *bench.py* script.
 * **objects**: contains the objects downloaded from IPFS.
 * **test_files**: used for generating random files.
+####
+* **menu.py**: script that provides a user-friendly command line UI.
+* **start_daemons.py**: script useful for starting two IPFS processes.
+* **start_servers.py**: script useful for starting 2^HYPERCUBE_SIZE servers processes, and the hop_counter.
+* **bench.py**: script used for testing.
+  
+
+## Dependencies
+* [ipfshttpclient](https://pypi.org/project/ipfshttpclient/)
+* [networkx](https://pypi.org/project/networkx/)
+* [Flask](https://pypi.org/project/Flask/)
+* [windows-curses](https://pypi.org/project/windows-curses/)
+* [openpyxl](https://pypi.org/project/openpyxl/) (for testing)
+
+## src/config.py
+* **HYPERCUBE_SIZE**: defines the hypercube data structure dimension, i.e. the number of network's nodes.
+* **SUPERSET_THRESHOLD**: limits the number of objects returned by superset search.
+
+
+## Usage
+    python start_daemons.py
+    python start_servers.py
+    python menu.py /ip4/127.0.0.1/tcp/5001 1
 
 ## References
 The project is inspired by
