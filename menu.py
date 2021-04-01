@@ -1,6 +1,7 @@
 import argparse
 import curses
 import os
+import shutil
 import sys
 from random import randint
 
@@ -60,9 +61,9 @@ def input_int(screen, row, col, prompt_string):
 
 
 def to_menu():
-    while True:
-        if screen.getch() == ord("\n"):
-            return
+    while screen.getch() != ord("\n"):
+        continue
+    return
 
 
 def insert(client):
@@ -236,6 +237,12 @@ if __name__ == '__main__':
     IPFS_ADDR = args.ipfs_addr
     SERVER_PORT = args.server_port
     client = Client(IPFS_ADDR, SERVER_PORT)
+
+    # clears the test directory
+    if os.path.exists(TEST_FILES):
+        shutil.rmtree(TEST_FILES)
+    os.makedirs(TEST_FILES)
+
 
     screen = curses.initscr()
     curses.noecho()
