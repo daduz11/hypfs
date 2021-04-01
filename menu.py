@@ -271,7 +271,10 @@ if __name__ == '__main__':
                     box.addstr(i, 2, menu_list[i - 1], normalText)
                 if i == row_num:
                     break
+        screen.border(0)
         screen.addstr(TITLE_Y, TITLE_X, TITLE[0], highlightText)
+        screen.clrtoeol()
+
         screen.refresh()
         box.border(0)
         box.refresh()
@@ -291,7 +294,7 @@ if __name__ == '__main__':
             operation(position, client)
             screen.erase()
             screen.border(0)
-            screen.addstr(max_row + 5, 2, "{} DONE".format(TITLE[position]))
+            screen.addstr(max_row + 5, 2, "{} DONE".format(TITLE[position]), curses.color_pair(3))
 
     curses.endwin()
     exit()
