@@ -23,9 +23,12 @@ The proposal provides the implementation of a Decentralized keywords Search Engi
 ## Dependencies
 * [ipfshttpclient](https://pypi.org/project/ipfshttpclient/)
 * [networkx](https://pypi.org/project/networkx/)
+* [requests](https://pypi.org/project/requests/)
 * [Flask](https://pypi.org/project/Flask/)
 * [windows-curses](https://pypi.org/project/windows-curses/)
 * [openpyxl](https://pypi.org/project/openpyxl/) (for testing)
+
+It is also possible (and suggested) to use the virtual environment provided in the main directory. Apparently in the *ipfshttpclient/client/__init__.py* there was a bug about versioning, therefore, the lines 64 and 65 have been commented out.
 
 ## src/config.py
 * **HYPERCUBE_SIZE**: defines the hypercube data structure dimension, i.e. the number of network's nodes.
@@ -36,6 +39,7 @@ The proposal provides the implementation of a Decentralized keywords Search Engi
     python start_daemons.py
     python start_servers.py
     python menu.py /ip4/127.0.0.1/tcp/5001 1
+
 
 ## References
 The project is inspired by
