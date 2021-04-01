@@ -2,6 +2,7 @@ import argparse
 import curses
 import os
 import sys
+from random import randint
 
 from client import Client
 from demo.scrolling_window import Scrolling_window
@@ -18,8 +19,6 @@ TITLE_Y = 1
 
 R = [3, 6, 10]
 C = [2, 2, 2]
-
-RANDOM_FILES_COUNT = 0
 
 
 def parse_arguments(argv):
@@ -71,7 +70,7 @@ def insert(client):
     if not path:
         return
     if path == 'random':
-        path = TEST_FILES + str(RANDOM_FILES_COUNT+1)
+        path = TEST_FILES + str(randint(0, 100))
         with open(path, 'wb') as random_file:
             random_file.write(os.urandom(512))
 
@@ -81,7 +80,7 @@ def insert(client):
         if not path:
             return
         if path == 'random':
-            path = TEST_FILES + str(RANDOM_FILES_COUNT + 1)
+            path = TEST_FILES + str(randint(0, 100))
             with open(path, 'wb') as random_file:
                 random_file.write(os.urandom(512))
 
