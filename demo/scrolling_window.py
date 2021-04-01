@@ -63,7 +63,11 @@ class Scrolling_window(object):
         curses.cbreak()
 
         curses.start_color()
+
         curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_CYAN)
+        curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
+        curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
+
         self.highlightText = curses.color_pair(1)
         self.normalText = curses.A_NORMAL
 

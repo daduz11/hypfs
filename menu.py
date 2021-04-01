@@ -61,9 +61,8 @@ def input_int(screen, row, col, prompt_string):
 
 
 def to_menu():
-    enter = screen.getch()
-    while enter != curses.KEY_ENTER:
-        if enter == screen.getch():
+    while True:
+        if screen.getch() == ord("\n"):
             return
 
 
