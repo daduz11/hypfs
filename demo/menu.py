@@ -77,7 +77,7 @@ def insert(client):
             random_file.write(os.urandom(512))
 
     while not os.path.isfile(path):
-        screen.addstr(R[0]+1, C[0], 'Alert: path not valid, retry')
+        screen.addstr(R[0]+1, C[0], 'Error: path not valid, retry', curses.color_pair(2))
         path = input_string(screen, R[0], C[0], 'Object path: ')
         if not path:
             return
@@ -86,23 +86,22 @@ def insert(client):
             with open(path, 'wb') as random_file:
                 random_file.write(os.urandom(512))
 
-
     screen.clrtoeol()
     screen.border(0)
-    screen.addstr(R[0]+1, C[0], 'Valid path')
+    screen.addstr(R[0]+1, C[0], 'Valid path', curses.color_pair(3))
 
     keyword = input_int(screen, R[1], C[1], 'Object keyword in range (0,{}): '.format(NODES-1))
     if not keyword:
         return
     while keyword < 1 or keyword > NODES:
-        screen.addstr(R[1]+1, C[1], 'Alert: Keyword entered not valid')
+        screen.addstr(R[1]+1, C[1], 'Error: Keyword entered not valid', curses.color_pair(2))
         keyword = input_int(screen, R[1], C[1], 'Object keyword in range (0,{}): '.format(NODES-1))
         if not keyword:
             return
 
     screen.clrtoeol()
     screen.border(0)
-    screen.addstr(R[1]+1, C[1], 'Valid Keyword')
+    screen.addstr(R[1]+1, C[1], 'Valid Keyword', curses.color_pair(3))
 
     res = client.add_obj(path, keyword)
     screen.addstr(R[-1], C[-1], res)
@@ -115,26 +114,26 @@ def remove(client):
     if not obj_hash:
         return
     while len(obj_hash) != 46:
-        screen.addstr(R[0]+1, C[0], 'Alert: hash not valid')
+        screen.addstr(R[0]+1, C[0], 'Error: hash not valid', curses.color_pair(2))
         obj_hash = input_string(screen, R[0], C[0], 'Object hash: ')
         if not obj_hash:
             return
     screen.clrtoeol()
     screen.border(0)
-    screen.addstr(R[0]+1, C[0], 'Valid hash')
+    screen.addstr(R[0]+1, C[0], 'Valid hash', curses.color_pair(3))
 
     keyword = input_int(screen, R[1], C[1], 'Object keyword in range (0,{}): '.format(NODES-1))
     if not keyword:
         return
 
     while keyword < 1 or keyword > NODES:
-        screen.addstr(R[1]+1, C[1], 'Alert: Keyword entered not valid')
+        screen.addstr(R[1]+1, C[1], 'Error: Keyword entered not valid', curses.color_pair(2))
         keyword = input_int(screen, R[1], C[1], 'Object keyword in range (0,{}): '.format(NODES-1))
         if not keyword:
             return
     screen.clrtoeol()
     screen.border(0)
-    screen.addstr(R[1]+1, C[1], 'Valid Keyword')
+    screen.addstr(R[1]+1, C[1], 'Valid Keyword', curses.color_pair(3))
 
     res = client.remove_obj(obj_hash, keyword)
     screen.addstr(R[-1], C[-1], res)
@@ -147,14 +146,14 @@ def get(client):
     if not obj_hash:
         return
     while len(obj_hash) != 46:
-        screen.addstr(R[0]+1, C[0], 'Alert: hash not valid')
+        screen.addstr(R[0]+1, C[0], 'Error: hash not valid', curses.color_pair(2))
         obj_hash = input_string(screen, R[0], C[0], 'Object hash: ')
         if not obj_hash:
             return
 
     screen.clrtoeol()
     screen.border(0)
-    screen.addstr(R[0]+1, C[0], 'Valid hash')
+    screen.addstr(R[0]+1, C[0], 'Valid hash', curses.color_pair(3))
 
     res = client.get_obj(obj_hash)
     screen.addstr(R[-1], C[-1], res)
@@ -168,13 +167,13 @@ def pin_search(client):
         return
 
     while keyword < 1 or keyword > NODES:
-        screen.addstr(R[0]+1, C[0], 'Alert: Keyword entered not valid')
+        screen.addstr(R[0]+1, C[0], 'Error: Keyword entered not valid', curses.color_pair(2))
         keyword = input_int(screen, R[0], C[0], 'Object keyword in range (0,{}): '.format(NODES-1))
         if not keyword:
             return
     screen.clrtoeol()
     screen.border(0)
-    screen.addstr(R[0]+1, C[0], 'Valid Keyword')
+    screen.addstr(R[0]+1, C[0], 'Valid Keyword', curses.color_pair(3))
 
     res = client.pin_search(keyword, -1)
     if len(res) >= 1:
@@ -193,26 +192,26 @@ def superset_search(client):
         return
 
     while keyword < 1 or keyword > NODES:
-        screen.addstr(R[0]+1, C[0], 'Alert: Keyword entered not valid')
+        screen.addstr(R[0]+1, C[0], 'Error: Keyword entered not valid', curses.color_pair(2))
         keyword = input_int(screen, R[0], C[0], 'Object keyword in range (0,{}): '.format(NODES-1))
         if not keyword:
             return
     screen.clrtoeol()
     screen.border(0)
-    screen.addstr(R[0]+1, C[0], 'Valid Keyword')
+    screen.addstr(R[0]+1, C[0], 'Valid Keyword', curses.color_pair(3))
 
     threshold = input_int(screen, R[1], C[1], 'Threshold (default: {}): '.format(SUPERSET_THRESHOLD))
     if not threshold:
         return
     while threshold < 1:
-        screen.addstr(R[1]+1, C[1], 'Alert: Threshold entered not valid')
+        screen.addstr(R[1]+1, C[1], 'Error: Threshold entered not valid', curses.color_pair(2))
         threshold = input_int(screen, R[1], C[1], 'Threshold (default: {}): '.format(SUPERSET_THRESHOLD))
         if not threshold:
             return
 
     screen.clrtoeol()
     screen.border(0)
-    screen.addstr(R[1]+1, C[1], 'Valid threshold')
+    screen.addstr(R[1]+1, C[1], 'Valid threshold', curses.color_pair(3))
 
     res = client.superset_search(keyword, threshold)
     if len(res) >= 1:
@@ -246,6 +245,9 @@ if __name__ == '__main__':
     curses.start_color()
     screen.keypad(1)
     curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_CYAN)
+    curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
+    curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
+
     highlightText = curses.color_pair(1)
     normalText = curses.A_NORMAL
     screen.border(0)
