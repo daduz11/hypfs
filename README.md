@@ -1,6 +1,6 @@
 #  HYPFS
 
-<img src="https://github.com/daduz11/hypfs/blob/master/sys_arch.png" width="230" align="center">
+<img src="https://github.com/daduz11/hypfs/blob/master/sys_arch.png" width="100%" align="center">
 
 
 This project was carried out for an assignment of Blockchain and Cryptocurrencies course at the University of Bologna. 
