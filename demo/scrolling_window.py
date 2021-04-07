@@ -156,12 +156,16 @@ class Scrolling_window(object):
         self.window.border(0)
         title = '{}'.format(self.search)
         self.window.addstr(1, 2, title, self.highlightText)
-        self.window.addstr(1, len(title)+2, ' - {} OBJECTS FOUND:'.format(len(self.items)), self.normalText)
-
-        for idx, item in enumerate(self.items[self.top:self.top + self.max_lines]):
-            # Highlight the current cursor line
-            if idx == self.current:
-                self.window.addstr(idx+3, 2, "- {}".format(item), self.highlightText)
-            else:
-                self.window.addstr(idx+3, 2, "- {}".format(item), self.normalText)
+        if "500 Internal Server Error" in self.items[0]:
+            self.window.addstr(3, 2, "{}".format("500 Internal Server Error:", "The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application."), curses.color_pair(2))
+            self.window.addstr(4, 2, "{}".format("The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application."), curses.color_pair(2))
+            self.window.border(0)
+        else:
+            self.window.addstr(1, len(title)+2, ' - {} OBJECTS FOUND:'.format(len(self.items)), self.normalText)
+            for idx, item in enumerate(self.items[self.top:self.top + self.max_lines]):
+                # Highlight the current cursor line
+                if idx == self.current:
+                    self.window.addstr(idx+3, 2, "- {}".format(item), self.highlightText)
+                else:
+                    self.window.addstr(idx+3, 2, "- {}".format(item), self.normalText)
         self.window.refresh()
