@@ -57,7 +57,7 @@ def input_int(screen, row, col, prompt_string):
         else:
             return int(input_str)
     except Exception:
-        return 0
+        return False
 
 
 def to_menu():
@@ -75,6 +75,16 @@ def insert(client):
         with open(path, 'wb') as random_file:
             random_file.write(os.urandom(512))
 
+    is_test = False
+    if path == 'test':
+        paths = []
+        for k in range(0, 15):
+            path = TEST_FILES + str(randint(0, 100))
+            paths.append(path)
+            with open(path, 'wb') as random_file:
+                random_file.write(os.urandom(512))
+        is_test = True
+
     while not os.path.isfile(path):
         screen.addstr(R[0]+1, C[0], 'Error: path not valid, retry', curses.color_pair(2))
         path = input_string(screen, R[0], C[0], 'Object path: ')
@@ -85,17 +95,33 @@ def insert(client):
             with open(path, 'wb') as random_file:
                 random_file.write(os.urandom(512))
 
+        is_test = False
+        if path == 'test':
+            paths = []
+            for k in range(0, 15):
+                path = TEST_FILES + str(randint(0, 100))
+                paths.append(path)
+                with open(path, 'wb') as random_file:
+                    random_file.write(os.urandom(512))
+            is_test = True
+
     screen.clrtoeol()
     screen.border(0)
     screen.addstr(R[0]+1, C[0], 'Valid path', curses.color_pair(3))
 
+    if is_test:
+        for p in paths:
+            client.add_obj(p, randint(1, NODES-1))
+        screen.addstr(R[-1], C[-1], '{} RANDOM FILES ADDED'.format(len(paths)))
+        return to_menu()
+
     keyword = input_int(screen, R[1], C[1], 'Object keyword in range (0,{}): '.format(NODES-1))
-    if not keyword:
+    if not keyword and keyword != 0:
         return
-    while keyword < 1 or keyword > NODES:
+    while not 0 <= keyword < NODES:
         screen.addstr(R[1]+1, C[1], 'Error: Keyword entered not valid', curses.color_pair(2))
         keyword = input_int(screen, R[1], C[1], 'Object keyword in range (0,{}): '.format(NODES-1))
-        if not keyword:
+        if not keyword and keyword != 0:
             return
 
     screen.clrtoeol()
@@ -122,13 +148,13 @@ def remove(client):
     screen.addstr(R[0]+1, C[0], 'Valid hash', curses.color_pair(3))
 
     keyword = input_int(screen, R[1], C[1], 'Object keyword in range (0,{}): '.format(NODES-1))
-    if not keyword:
+    if not keyword and keyword != 0:
         return
 
-    while keyword < 1 or keyword > NODES:
+    while not 0 <= keyword < NODES:
         screen.addstr(R[1]+1, C[1], 'Error: Keyword entered not valid', curses.color_pair(2))
         keyword = input_int(screen, R[1], C[1], 'Object keyword in range (0,{}): '.format(NODES-1))
-        if not keyword:
+        if not keyword and keyword != 0:
             return
     screen.clrtoeol()
     screen.border(0)
@@ -162,13 +188,13 @@ def get(client):
 
 def pin_search(client):
     keyword = input_int(screen, R[0], C[0], 'Object keyword in range (0,{}): '.format(NODES-1))
-    if not keyword:
+    if not keyword and keyword != 0:
         return
 
-    while keyword < 1 or keyword > NODES:
+    while not 0 <= keyword < NODES:
         screen.addstr(R[0]+1, C[0], 'Error: Keyword entered not valid', curses.color_pair(2))
         keyword = input_int(screen, R[0], C[0], 'Object keyword in range (0,{}): '.format(NODES-1))
-        if not keyword:
+        if not keyword and keyword != 0:
             return
     screen.clrtoeol()
     screen.border(0)
@@ -187,13 +213,12 @@ def pin_search(client):
 
 def superset_search(client):
     keyword = input_int(screen, R[0], C[0], 'Object keyword in range (0,{}): '.format(NODES-1))
-    if not keyword:
+    if not keyword and keyword != 0:
         return
-
-    while keyword < 1 or keyword > NODES:
+    while not 0 <= keyword < NODES:
         screen.addstr(R[0]+1, C[0], 'Error: Keyword entered not valid', curses.color_pair(2))
         keyword = input_int(screen, R[0], C[0], 'Object keyword in range (0,{}): '.format(NODES-1))
-        if not keyword:
+        if not keyword and keyword != 0:
             return
     screen.clrtoeol()
     screen.border(0)
